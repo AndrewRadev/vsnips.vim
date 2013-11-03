@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "Basic" do
-  let(:vim)      { VIM }
   let(:filename) { 'test.txt' }
 
   specify "simple snippets are just expanded to their text" do
@@ -14,8 +13,7 @@ describe "Basic" do
       test
     EOF
 
-    # TODO (2013-02-03) Make this simpler
-    vim.command 'exe "normal A\\<c-t>"'
+    vim.feedkeys 'A\<c-t>'
     vim.write
 
     assert_file_contents <<-EOF

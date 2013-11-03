@@ -4,7 +4,7 @@ module Support
   module Files
     def set_file_contents(string)
       write_file(filename, string)
-      @vim.edit!(filename)
+      vim.edit!(filename)
     end
 
     def file_contents
@@ -17,7 +17,7 @@ module Support
 
     def add_snippet_file(filename, string)
       write_file(filename, string)
-      @vim.command("call add(g:vsnips_snippet_files, '#{filename}')")
+      vim.command("call add(g:vsnips_snippet_files, '#{filename}')")
     end
   end
 end
