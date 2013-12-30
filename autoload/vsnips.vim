@@ -25,8 +25,19 @@ function! vsnips#ExpandSnippet()
       " Replace the trigger with the expansion
       exe 's/'.escape(trigger, '/').'$/'.escape(expansion, '/').'/'
 
-      " Update the cursor position
-      let position[2] += len(expansion) - len(trigger)
+      " new cursor position
+      let position[2] -= len(trigger)
+      if empty(snippet.placeholders)
+        " put the cursor at the end
+        let position[2] += len(expansion)
+      else
+        " put the cursor at the first placeholder
+        call feedkeys("\<esc>", "n")
+        let position[2] += snippet.placeholders[0].position[1] + 1
+
+        " TODO (2013-11-03) Consider this carefully
+        call feedkeys("vf}\<c-g>", "n")
+      endif
 
       break
     endif
@@ -48,7 +59,10 @@ function! vsnips#SnippetsForFiletype(filetype)
   let snippets = []
 
   for file in g:vsnips_snippet_files
-    call extend(snippets, vsnips#ParseSnippetFile(file))
+    for snippet in vsnips#ParseSnippetFile(file)
+      call snippet.Process()
+      call add(snippets, snippet)
+    endfor
   endfor
 
   return snippets

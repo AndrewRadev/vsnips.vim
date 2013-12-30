@@ -1,4 +1,3 @@
-require 'pry'
 require 'vimrunner'
 require 'vimrunner/rspec'
 require_relative './support/vim'
@@ -10,7 +9,7 @@ Vimrunner::RSpec.configure do |config|
   plugin_path = File.expand_path('.')
 
   config.start_vim do
-    vim = Vimrunner.start
+    vim = Vimrunner.start_gvim
     vim.add_plugin(plugin_path, 'plugin/vsnips.vim')
     vim
   end
